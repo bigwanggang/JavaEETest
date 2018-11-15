@@ -1,6 +1,6 @@
 ### 我的增加
 
-
+  test26:增加了BCryptPasswordEncoder对密码的验证，
 
 
 
