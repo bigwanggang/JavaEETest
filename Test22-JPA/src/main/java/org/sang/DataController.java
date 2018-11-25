@@ -9,55 +9,24 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-/**
- * Created by sang on 2016/12/30.
- */
 @RestController
 public class DataController {
     @Autowired
-    PersonRepository personRepository;
+    PersonService personService;
 
     @RequestMapping("/save")
-    public Person save(String name,String address,Integer age) {
-        Person person = personRepository.save(new Person(null, name, age, address));
-        return person;
+    public Person save(Person person) {
+        return personService.save(person);
     }
 
-    @RequestMapping("/q1")
-    public List<Person> q1(String address) {
-        List<Person> people = personRepository.findByAddress(address);
-        return people;
+    @RequestMapping("/cache")
+    public Person q1(Person person) {
+        return personService.findOne(person);
     }
 
-    @RequestMapping("/q2")
-    public Person q2(String name, String address) {
-        Person people = personRepository.findByNameAndAddress(name, address);
-        return people;
-    }
-
-    @RequestMapping("/q3")
-    public Person q3(String name, String address) {
-        Person person = personRepository.withNameAndAddressQuery(name, address);
-        return person;
-    }
-
-    @RequestMapping("/q4")
-    public Person q4(String name, String address) {
-        Person person = personRepository.withNameAndAddressNamedQuery(name, address);
-        return person;
-    }
-    @RequestMapping("/sort")
-    public List<Person> sort() {
-        List<Person> people = personRepository.findAll(new Sort(Sort.Direction.ASC, "age"));
-        return people;
-    }
-    @RequestMapping("/page")
-    public Page<Person> page(int page,int size){
-        Page<Person> all = personRepository.findAll(new PageRequest(page, size));
-        return all;
-    }
-    @RequestMapping("/all")
-    public List<Person> all(){
-        return personRepository.findAll();
+    @RequestMapping("/remove")
+    public String remove(long id) {
+        personService.remove(id);
+        return "ok";
     }
 }
